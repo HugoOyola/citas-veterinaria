@@ -11,6 +11,13 @@ const Formulario = ({ pacientes, setPacientes }) => {
 
   const [error, setError] = useState(false);
 
+  const generarId = () => {
+    const random = Math.random().toString(36).substring(2);
+    const fecha = Date.now().toString(36);
+
+    return random + fecha;
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -30,6 +37,7 @@ const Formulario = ({ pacientes, setPacientes }) => {
       telefono,
       fecha,
       sintomas,
+      id: generarId(),
     };
 
     // Enviando el objeto al componente principal
@@ -58,7 +66,7 @@ const Formulario = ({ pacientes, setPacientes }) => {
         )}
         <div className="mb-5">
           <label htmlFor="mascota" className="block text-gray-700 uppercase font-bold">
-            Nombre de la Mascota {mascota}
+            Nombre de la Mascota
           </label>
           <input
             type="text"
