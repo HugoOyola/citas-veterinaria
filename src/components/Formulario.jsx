@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import Error from "./Error";
 
-const Formulario = ({ pacientes, setPacientes, paciente }) => {
+const Formulario = ({ pacientes, setPacientes, paciente, setPaciente }) => {
   const [mascota, setMascota] = useState("");
   const [propietario, setPropietario] = useState("");
   const [email, setEmail] = useState("");
@@ -11,7 +11,16 @@ const Formulario = ({ pacientes, setPacientes, paciente }) => {
 
   const [error, setError] = useState(false);
 
-  useEffect(() => {}, [paciente]);
+  useEffect(() => {
+    if (Object.keys(paciente).length > 0) {
+      setMascota(paciente.mascota);
+      setPropietario(paciente.propietario);
+      setEmail(paciente.email);
+      setTelefono(paciente.telefono);
+      setFecha(paciente.fecha);
+      setSintomas(paciente.sintomas);
+    }
+  }, [paciente]);
 
   const generarId = () => {
     const random = Math.random().toString(36).substring(2);
@@ -39,12 +48,22 @@ const Formulario = ({ pacientes, setPacientes, paciente }) => {
       telefono,
       fecha,
       sintomas,
-      id: generarId(),
     };
 
-    // Enviando el objeto al componente principal
-    setPacientes([...pacientes, objetoPaciente]);
+    if (paciente.id) {
+      //Editando el registro
+      objetoPaciente.id = paciente.id;
+      console.log(objetoPaciente);
+      console.log(paciente);
 
+      const pacientesActualizados = pacientes.map((pacienteState) => (pacienteState.id === paciente.id ? objetoPaciente : pacienteState));
+      setPacientes(pacientesActualizados);
+      setPaciente({});
+    } else {
+      // Nuevo registro
+      objetoPaciente.id = generarId();
+      setPacientes([...pacientes, objetoPaciente]);
+    }
     //  Reiniciando el Formulario
     setMascota("");
     setPropietario("");
@@ -135,7 +154,7 @@ const Formulario = ({ pacientes, setPacientes, paciente }) => {
         <input
           type="submit"
           className="bg-indigo-600 w-full p-2 text-white uppercase font-bold hover:bg-indigo-700 rounded-md cursor-pointer transition-colors duration-300"
-          value="Agregar Paciente"
+          value={paciente.id ? "Editar Paciente" : "Agregar Paciente"}
         />
       </form>
     </div>
