@@ -59,11 +59,7 @@ const Formulario = ({ pacientes, setPacientes }) => {
         Añade Pacientes y{""} <span className="text-indigo-600 font-bold">Administralos</span>{" "}
       </p>
       <form onSubmit={handleSubmit} className="bg-white shadow-md rounded-lg py-10 px-5 mb-10">
-        {error && (
-          <Error>
-            <p>Todos los campos son obligatorios</p>
-          </Error>
-        )}
+        {error && <Error mensaje="Todos los campos son obligatorios" />}
         <div className="mb-5">
           <label htmlFor="mascota" className="block text-gray-700 uppercase font-bold">
             Nombre de la Mascota
